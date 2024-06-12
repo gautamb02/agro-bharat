@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "718513815057",
+    "project_id": "agro-bharat-demo",
+    "storage_bucket": "agro-bharat-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718513815057:android:982ed4c026726b93c67bb0",
+        "android_client_info": {
+          "package_name": "labs.aim.agro_bharat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGfHHe6zR62pm31itjkxjjsUDnKVN9_vM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
