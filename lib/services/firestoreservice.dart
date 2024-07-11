@@ -1,3 +1,4 @@
+import 'package:agro_bharat/services/notificationservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -11,13 +12,72 @@ class FirestoreService {
   }
 
   // Add a new user
-  Future<void> addUser(String phoneNumber, String userId, String name) async {
-    await users.doc(userId).set({
-      'userId': userId,
-      'phoneNumber': phoneNumber,
-      'name': name,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
+  Future<void> addUser(String phoneNumber, String userId, String name, String dob, String address, String state, String pincode) async {
+    try {
+      String? fcmToken = await FCMService.getFcmToken();
+
+      await users.doc(userId).set({
+        'userId': userId,
+        'phoneNumber': phoneNumber,
+        'name': name,
+        'dob': dob,
+        'address': address,
+        'state': state,
+        'pincode': pincode,
+        'fcmToken': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      // Handle or log the error
+      print("Error adding user: $e");
+      rethrow;
+    }
+  }
+
+
+  Future<void> updateUserFcmToken(String userId) async {
+    try {
+      String? fcmToken = await FCMService.getFcmToken();
+
+      if (fcmToken != null) {
+        await users.doc(userId).update({
+          'fcmToken': fcmToken,
+          'lastTokenUpdate': FieldValue.serverTimestamp(),
+        });
+      } else {
+        print("Failed to retrieve FCM token");
+      }
+    } catch (e) {
+      print("Error updating FCM token: $e");
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getUserById(String userId) async {
+    try {
+      DocumentSnapshot docSnapshot = await users.doc(userId).get();
+      if (docSnapshot.exists) {
+        return docSnapshot.data() as Map<String, dynamic>;
+      } else {
+        // print("No user found with ID: $userId");
+        return null;
+      }
+    } catch (e) {
+      // print("Error retrieving user: $e");
+      return null;
+    }
+  }
+
+  Future<void> updateUser(String userId, Map<String, dynamic> data) async {
+    try {
+      String? token = await FCMService.getFcmToken();
+      if (token != null) {
+        data['fcmToken'] = token;  // Add the token to the data if needed
+      }
+      await users.doc(userId).update(data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<DocumentSnapshot?> getUserDataByPhoneNumber(String phoneNumber) async {

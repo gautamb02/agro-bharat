@@ -1,5 +1,8 @@
 import 'package:agro_bharat/config/constants.dart';
 import 'package:agro_bharat/screens/homescreen.dart';
+import 'package:agro_bharat/screens/signupscreen.dart';
+import 'package:agro_bharat/services/firestoreservice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +22,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   String? _phoneNumber;
   String? verificationid;
   String? _otp;
+  FirestoreService _firestoreService = FirestoreService();
 
   @override
   void dispose() {
@@ -45,8 +49,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
     }
 
     try {
-
-      if(verificationid==null || _otp == null){
+      if (verificationid == null || _otp == null) {
         return;
       }
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -60,30 +63,28 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         User? user = FirebaseAuth.instance.currentUser;
 
         if (user != null) {
-          // String uid = user.uid;
+          String uid = user.uid;
           // print("USER ID : " +user.uid);
-          // if (userDataSnapshot!=null) {
-          //   print("USER SNAP : ${userDataSnapshot['name']}");
-          //   String name = userDataSnapshot['name'];
-          //   String phoneNumber = userDataSnapshot['phoneNumber'];
-          //   String userId = userDataSnapshot['userId'];
-          //   UserModel userm = UserModel( name: name, phoneNumber: phoneNumber, userId: userId);
-          //
-          //   await SharedPreferencesHelper.saveUserData(userm);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
-        } else {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => NameInputPage(
-          //         phoneNumber: widget.phonenumber,
-          //         userId: uid),
-          //   ),
-          // );
+          DocumentSnapshot<Object?>? userDataSnapshot = await _firestoreService.getUserDataByPhoneNumber(_phoneNumber!);
+          if (userDataSnapshot != null) {
+            print("USER SNAP : ${userDataSnapshot['name']}");
+            await _firestoreService.updateUserFcmToken(uid);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignUpScreen(
+                    phoneNumber: _phoneNumber ?? "",
+                    userId: uid
+                ),
+              ),
+            );
+          }
         }
       });
     } catch (ex) {
@@ -223,10 +224,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
       return;
     }
 
-    String normalizedPhoneNumber = "+91" + _phoneNumber!;
+    _phoneNumber = "+91" + _phoneNumber!;
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: normalizedPhoneNumber,
+        phoneNumber: _phoneNumber,
         verificationCompleted: (PhoneAuthCredential) {},
         verificationFailed: (FirebaseAuthException) {},
         codeSent: (String verificationId, int? resendToken) {

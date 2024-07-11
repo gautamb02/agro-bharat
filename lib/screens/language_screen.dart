@@ -1,6 +1,8 @@
 import 'package:agro_bharat/components/language_button.dart';
 import 'package:agro_bharat/config/constants.dart';
+import 'package:agro_bharat/screens/homescreen.dart';
 import 'package:agro_bharat/screens/phone_number.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
@@ -23,7 +25,23 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Check if the user is logged in
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Navigate to HomeScreen if logged in
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      });
+    }
+  }
+  @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       body: Center(
         child: Column(
