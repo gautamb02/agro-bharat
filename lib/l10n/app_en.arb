@@ -1,0 +1,27 @@
+{
+  "helloWorld": "Hello World",
+  "@helloWorld": {
+    "description": "A simple greeting"
+  },
+  "welcome": "Welcome to my app",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  "next": "Next",
+  "selectLanguage": "Select Language",
+  "enterYourPhone": "Enter your Phone",
+  "sixDigitCodeInfo": "You will receive a 6-digit code to verify your phone number",
+  "phoneNumber": "Phone Number",
+  "enterReceivedOTP": "Enter received OTP",
+  "sendOTP": "Send OTP",
+  "verifyPhoneNumber": "Verify Phone Number",
+  "enterValidOTP": "Enter a Valid OTP!",
+  "enterValidPhoneNumber": "Enter a Valid Phone Number!",
+  "settings" : "Settings",
+  "home_tab" : "Home",
+  "locateCow_tab" : "Locate Cow",
+  "settings_tab" : "Settings",
+  "profile_tab" : "Profile",
+  "addcow_tab" : "Add Cow"
+
+}

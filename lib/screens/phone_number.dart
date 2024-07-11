@@ -5,6 +5,7 @@ import 'package:agro_bharat/services/firestoreservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
   const PhoneNumberScreen({Key? key}) : super(key: key);
@@ -30,20 +31,21 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
     super.dispose();
   }
 
-  void _verifyPhoneNumber() async {
+  void _verifyPhoneNumber(BuildContext context) async {
     // Add your phone number verification logic here
     _otp = _otpController.text.trim();
 
     if (_otp!.length != 6) {
-      const snackdemo = SnackBar(
-          content: Text(
-            'Enter a Valid OTP!',
-            style: TextStyle(fontFamily: 'MuktaLatin'),
-          ),
-          backgroundColor: Colors.red,
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(5));
+      final snackdemo = SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.enterValidOTP,
+          style: TextStyle(fontFamily: 'MuktaLatin'),
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(5),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackdemo);
       return;
     }
@@ -64,9 +66,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
         if (user != null) {
           String uid = user.uid;
-          // print("USER ID : " +user.uid);
-
-          DocumentSnapshot<Object?>? userDataSnapshot = await _firestoreService.getUserDataByPhoneNumber(_phoneNumber!);
+          DocumentSnapshot<Object?>? userDataSnapshot =
+          await _firestoreService.getUserDataByPhoneNumber(_phoneNumber!);
           if (userDataSnapshot != null) {
             print("USER SNAP : ${userDataSnapshot['name']}");
             await _firestoreService.updateUserFcmToken(uid);
@@ -101,8 +102,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              "Enter your Phone",
+             Text(
+              AppLocalizations.of(context)!.enterYourPhone,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 30,
@@ -112,7 +113,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              "You will receive a 6-digit code to verify your phone number",
+              AppLocalizations.of(context)!.sixDigitCodeInfo,
               style: TextStyle(
                 fontFamily: 'MuktaLatin',
                 color: Colors.grey[700],
@@ -127,7 +128,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   TextStyle(fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
               decoration: InputDecoration(
                 iconColor: Colors.black,
-                hintText: 'Phone Number',
+                hintText: AppLocalizations.of(context)!.phoneNumber,
                 filled: true,
                 fillColor: AppConstants.cardBackgroundColor,
                 prefixIcon: Icon(Icons.phone),
@@ -148,7 +149,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
                 decoration: InputDecoration(
                   iconColor: Colors.black,
-                  hintText: 'Enter received OTP',
+                  hintText: AppLocalizations.of(context)!.enterReceivedOTP,
                   filled: true,
                   fillColor: AppConstants.cardBackgroundColor,
                   prefixIcon: Icon(Icons.lock),
@@ -163,7 +164,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             Visibility(
               visible: _showOtpButton,
               child: ElevatedButton(
-                  onPressed: _sendOTP,
+                  onPressed:  () => _sendOTP(context),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(AppConstants.primaryGreen),
@@ -174,8 +175,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.5,
                           fontFamily: 'MuktaLatin'))),
-                  child: const Text(
-                    'Send OTP',
+                  child:  Text(
+                    AppLocalizations.of(context)!.sendOTP,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                   )),
@@ -183,7 +184,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             Visibility(
               visible: _showVerifyButton,
               child: ElevatedButton(
-                  onPressed: _verifyPhoneNumber,
+                  onPressed: () => _verifyPhoneNumber(context),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(AppConstants.primaryGreen),
@@ -194,8 +195,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.5,
                           fontFamily: 'MuktaLatin'))),
-                  child: const Text(
-                    'Verify Phone Number',
+                  child:  Text(
+                    AppLocalizations.of(context)!.verifyPhoneNumber,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.white),
                   )),
@@ -206,20 +207,21 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
     );
   }
 
-  void _sendOTP() async {
+  void _sendOTP(BuildContext context) async {
     _phoneNumber = _phoneController.text.trim();
     // You can navigate to the next screen or perform any other action
     // based on the verified phone number
     if (_phoneNumber!.length != 10) {
-      const snackdemo = SnackBar(
-          content: Text(
-            'Enter a Valid Phone Number!',
-            style: TextStyle(fontFamily: 'MuktaLatin'),
-          ),
-          backgroundColor: Colors.red,
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(5));
+      final snackdemo = SnackBar(
+        content: Text(
+          AppLocalizations.of(context)!.enterValidPhoneNumber,
+          style: TextStyle(fontFamily: 'MuktaLatin'),
+        ),
+        backgroundColor: Colors.red,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(5),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackdemo);
       return;
     }
@@ -227,9 +229,9 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
     _phoneNumber = "+91" + _phoneNumber!;
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _phoneNumber,
-        verificationCompleted: (PhoneAuthCredential) {},
-        verificationFailed: (FirebaseAuthException) {},
+        phoneNumber: _phoneNumber!,
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {},
         codeSent: (String verificationId, int? resendToken) {
           setState(() {
             verificationid = verificationId;
@@ -245,4 +247,5 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
       // Handle error sending OTP
     }
   }
+
 }

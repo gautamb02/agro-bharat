@@ -1,0 +1,20 @@
+{
+  "helloWorld": "नमस्कार जग",
+  "welcome": "माझ्या अॅपमध्ये आपले स्वागत आहे",
+  "next": "पुढे",
+  "selectLanguage": "भाषा निवडा",
+  "enterYourPhone": "आपला फोन नंबर प्रविष्ट करा",
+  "sixDigitCodeInfo": "आपला फोन नंबर सत्यापित करण्यासाठी आपल्याला 6-अंकी कोड मिळेल",
+  "phoneNumber": "फोन नंबर",
+  "enterReceivedOTP": "प्राप्त OTP प्रविष्ट करा",
+  "sendOTP": "OTP पाठवा",
+  "verifyPhoneNumber": "फोन नंबर सत्यापित करा",
+  "enterValidOTP": "वैध OTP प्रविष्ट करा!",
+  "enterValidPhoneNumber": "वैध फोन नंबर प्रविष्ट करा!",
+  "settings" : "Settings",
+  "home_tab" : "मुख्य पृष्ठ",
+  "locateCow_tab" : "गाय शोधा",
+  "settings_tab" : "सेटिंग्स",
+  "profile_tab" : "प्रोफाइल",
+  "addcow_tab" : "गाय जोडा"
+}

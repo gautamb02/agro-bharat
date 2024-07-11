@@ -1,5 +1,8 @@
 import 'package:agro_bharat/config/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -26,11 +29,11 @@ class CustomBottomNavBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(Icons.home, 'Home', 0),
-              _buildNavItem(Icons.location_on, 'Locate Cow', 1),
+              _buildNavItem(Icons.home, AppLocalizations.of(context)!.home_tab, 0),
+              _buildNavItem(Icons.location_on, AppLocalizations.of(context)!.locateCow_tab, 1),
               SizedBox(width: 60), // Space for FAB
-              _buildNavItem(Icons.settings, 'Settings', 3),
-              _buildNavItem(Icons.account_circle_sharp, 'Profile', 4),
+              _buildNavItem(Icons.settings, AppLocalizations.of(context)!.settings_tab, 3),
+              _buildNavItem(Icons.account_circle_sharp, AppLocalizations.of(context)!.profile_tab, 4),
             ],
           ),
         ),
@@ -58,7 +61,7 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               SizedBox(height: 8), // Add some space between FAB and text
               Text(
-                'Add Cow',
+                AppLocalizations.of(context)!.addcow_tab,
                 style: TextStyle(
                   color:  selectedIndex==2 ? Colors.white : Colors.white.withOpacity(0.7),
 

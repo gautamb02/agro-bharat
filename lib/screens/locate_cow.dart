@@ -1,5 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:agro_bharat/config/constants.dart';
 import 'package:agro_bharat/loader/mapskeleton.dart';
 import 'package:flutter/material.dart';
@@ -217,11 +221,17 @@ class _LocateCowState extends State<LocateCow> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Locate Cow', style: TextStyle(color: Colors.black87)),
-        backgroundColor: Colors.white.withOpacity(0.7),
+        title:  Text(AppLocalizations.of(context)!.locateCow_tab, style: TextStyle(fontFamily: 'Outfit',color: Colors.white,fontWeight: FontWeight.w700, fontSize: 25)),
+        backgroundColor: AppConstants.primaryGreen,
         elevation: 0,
         centerTitle: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        // flexibleSpace: ClipRect(
+        //   child: BackdropFilter(
+        //     filter: ImageFilter.blur(sigmaX: 10,sigmaY:10 ),
+        //     child: Container(color: Colors.transparent),
+        //   ),
+        // ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.zero,bottom: Radius.circular(15))),
       ),
       body: _locationObtained ? content() : const MapSkeletonLoader(),
     );
@@ -259,7 +269,43 @@ class _LocateCowState extends State<LocateCow> {
   }
 }
 
+
 TileLayer get openStreetMapTileLayer => TileLayer(
   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
   userAgentPackageName: 'labs.aim.agro_bharat',
+  tileBuilder: _tileUIBuilder,
 );
+
+
+Widget _tileUIBuilder(
+    BuildContext context,
+    Widget tileWidget,
+    TileImage tile,
+    ) {
+  return ColorFiltered(
+    colorFilter: const ColorFilter.matrix(<double>[
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0,      0,      0,      1, 0,
+    ]),
+    child: tileWidget,
+  );
+}
+
+Widget _darkMode(
+    BuildContext context,
+    Widget tileWidget,
+    TileImage tile,
+    ) {
+  return ColorFiltered(
+    colorFilter: const ColorFilter.matrix(<double>[
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0.2126, 0.7152, 0.0722, 0, 0,
+      0,      0,      0,      1, 0,
+    ]),
+    child: tileWidget,
+  );
+}
+

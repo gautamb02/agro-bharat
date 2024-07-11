@@ -1,11 +1,14 @@
 import 'package:agro_bharat/screens/alert.dart';
 import 'package:agro_bharat/screens/homescreen.dart';
 import 'package:agro_bharat/screens/language_screen.dart';
+import 'package:agro_bharat/services/localmanager.dart';
 import 'package:agro_bharat/services/notificationservice.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'config/firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -13,7 +16,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print("Handling a background message: ${message.messageId}");
-  // The app will handle this message when it's opened
 }
 
 void main() async {
@@ -21,17 +23,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  requestNotificationPermission();
+  await requestNotificationPermission();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
-  // Handle foreground messages
   FirebaseMessaging.onMessage.listen(_handleMessage);
-
-  // Handle when the app is opened from a background state
   FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
 
-  // Check for initial message (app opened from terminated state)
-  RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  RemoteMessage? initialMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     _handleMessage(initialMessage);
   }
@@ -47,7 +46,6 @@ void main() async {
 void _handleMessage(RemoteMessage message) {
   if (message.notification != null) {
     print('Notification: ${message.notification}');
-    // Delay the navigation slightly to ensure the app is fully initialized
     Future.delayed(Duration(milliseconds: 100), () {
       navigatorKey.currentState?.push(
         MaterialPageRoute(builder: (context) => AlertScreen(message: message)),
@@ -58,7 +56,6 @@ void _handleMessage(RemoteMessage message) {
 
 Future<void> requestNotificationPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -68,23 +65,72 @@ Future<void> requestNotificationPermission() async {
     provisional: false,
     sound: true,
   );
-
   print('User granted permission: ${settings.authorizationStatus}');
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('en', '');
+  final LocaleManager _localeManager = LocaleManager();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  Future<void> _loadLocale() async {
+    final localeCode = await _localeManager.getLocale();
+    if (localeCode != null) {
+      setState(() {
+        _locale = Locale(localeCode);
+      });
+    }
+  }
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+      _localeManager.setLocale(locale.languageCode); // Save locale
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('mr', ''), // Marathi
+        Locale('hi', ''), // Hindi
+      ],
+      locale: _locale,
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
+      title: 'Agro Bharat',
       theme: ThemeData(
         fontFamily: "MuktaLatin",
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: LanguageSelectionScreen(setLocale: setLocale),
     );
   }
 }
