@@ -274,6 +274,9 @@ TileLayer get openStreetMapTileLayer => TileLayer(
   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
   userAgentPackageName: 'labs.aim.agro_bharat',
   tileBuilder: _tileUIBuilder,
+  additionalOptions: {
+
+  },
 );
 
 
