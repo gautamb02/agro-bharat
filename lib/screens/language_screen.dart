@@ -2,22 +2,20 @@ import 'package:agro_bharat/components/language_button.dart';
 import 'package:agro_bharat/config/constants.dart';
 import 'package:agro_bharat/screens/homescreen.dart';
 import 'package:agro_bharat/screens/phone_number.dart';
+import 'package:agro_bharat/provider/locale_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
-  final Function(Locale) setLocale;
-
-  const LanguageSelectionScreen({Key? key, required this.setLocale}) : super(key: key);
+  const LanguageSelectionScreen({Key? key}) : super(key: key);
 
   @override
   State<LanguageSelectionScreen> createState() => _LanguageSelectionScreenState();
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
-  String _selectedLanguage = 'en';
-
   final List<Map<String, String>> _languages = [
     {'code': 'en', 'name': 'English'},
     {'code': 'hi', 'name': 'हिंदी'},
@@ -40,6 +38,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -48,26 +48,24 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                 child: Image.asset("assets/images/splashimage_small.png", height: 60)),
-            Text(AppLocalizations.of(context)!.selectLanguage,style: TextStyle(
-              fontSize: 25, fontWeight: FontWeight.bold
-            ),),
-            SizedBox(height: 20,),
+            Text(
+              AppLocalizations.of(context)!.selectLanguage,
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
             ..._languages.map((language) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: LanguageButton(
                   languageName: language['name']!,
-                  isSelected: language['code'] == _selectedLanguage,
+                  isSelected: language['code'] == localeProvider.locale.languageCode,
                   onTap: () {
-                    setState(() {
-                      _selectedLanguage = language['code']!;
-                      widget.setLocale(Locale(_selectedLanguage)); // Set locale when language is selected
-                    });
+                    localeProvider.setLocale(Locale(language['code']!));
                   },
                 ),
               );
             }).toList(),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
             SizedBox(
               height: 40,
               width: (MediaQuery.of(context).size.width * 0.6),

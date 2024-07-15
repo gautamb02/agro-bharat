@@ -17,11 +17,74 @@
   "verifyPhoneNumber": "Verify Phone Number",
   "enterValidOTP": "Enter a Valid OTP!",
   "enterValidPhoneNumber": "Enter a Valid Phone Number!",
-  "settings" : "Settings",
-  "home_tab" : "Home",
-  "locateCow_tab" : "Locate Cow",
-  "settings_tab" : "Settings",
-  "profile_tab" : "Profile",
-  "addcow_tab" : "Add Cow"
+  "settings": "Settings",
+  "home_tab": "Home",
+  "@home_tab": {
+    "description": "Title for the Home tab"
+  },
+  "locateCow_tab": "Locate Cow",
+  "settings_tab": "Settings",
+  "profile_tab": "Profile",
+  "addcow_tab": "Add Cow",
+  "change_language": "Change Language",
+  "cancel": "Cancel",
+  "addCow": "Add Cow",
+  "cowLinkedSuccessfully": "Cow linked successfully",
+  "failedToLinkCow": "Failed to link cow",
+  "error": "Error: ",
+  "userNotLoggedIn": "User not logged in",
+  "linkNewCow": "Link a New Cow",
+  "cowID": "Cow ID",
+  "enterUniqueCowID": "Enter the unique ID for your cow",
+  "linkCowToFarmer": "Link Cow to Farmer",
+  "pleaseEnterCowID": "Please enter a Cow ID",
 
+  "total_cows": "Total Cows",
+  "@total_cows": {
+    "description": "Title for the card showing total number of cows"
+  },
+  "total_records": "Total Records",
+  "@total_records": {
+    "description": "Title for the card showing total records"
+  },
+  "avg_temperature": "Avg Temperature",
+  "@avg_temperature": {
+    "description": "Title for the card showing average temperature"
+  },
+  "avg_heart_rate": "Avg Heart Rate",
+  "@avg_heart_rate": {
+    "description": "Title for the card showing average heart rate"
+  },
+  "latest_readings": "Latest Readings",
+  "@latest_readings": {
+    "description": "Title for the section showing latest readings"
+  },
+  "cow_id": "Cow ID: {cowId}",
+  "@cow_id": {
+    "description": "Text displaying the cow ID with a placeholder"
+  },
+  "temperature": "Temperature: {temperature}",
+  "@temperature": {
+    "description": "Text displaying the temperature with a placeholder"
+  },
+  "heart_rate": "Heart Rate:",
+  "@heart_rate": {
+    "description": "Text displaying the heart rate with a placeholder"
+  },
+  "spo2": "SPO2: {spo2}",
+  "@spo2": {
+    "description": "Text displaying the SPO2 level with a placeholder"
+  },
+  "gps": "GPS: Lat {latitude}, Long {longitude}",
+  "@gps": {
+    "description": "Text displaying the GPS coordinates with placeholders"
+  },
+  "error_message": "Error: {error}",
+  "@error_message": {
+    "description": "Snackbar message showing error with a placeholder"
+  },
+  "user_not_logged_in": "User not logged in",
+  "@user_not_logged_in": {
+    "description": "Snackbar message showing user is not logged in"
+  }
 }

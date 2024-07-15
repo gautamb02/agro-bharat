@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
+import 'package:agro_bharat/provider/cow_locations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:provider/provider.dart';
 import 'package:agro_bharat/config/constants.dart';
 import 'package:agro_bharat/loader/mapskeleton.dart';
 import 'package:flutter/material.dart';
@@ -86,8 +87,50 @@ class _LocateCowState extends State<LocateCow> {
         ),
       ];
 
-      _generateRandomNearbyLocations();
+      // _generateRandomNearbyLocations();
+      _addCowLocations();
       _locationObtained = true;
+    });
+  }
+  void _addCowLocations() {
+    final cowLocations = Provider.of<CowLocationProvider>(context, listen: false).cowLocations;
+
+    for (var cowLocation in cowLocations) {
+      _markers.add(
+        Marker(
+          point: LatLng(cowLocation.latitude, cowLocation.longitude),
+          width: 60,
+          height: 60,
+          child: GestureDetector(
+            onTap: () => _showDirectionsDialog(LatLng(cowLocation.latitude, cowLocation.longitude)),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(
+                  Icons.location_pin,
+                  size: 30,
+                  color: Colors.red,
+                ),
+                Positioned(
+                  top: 40,
+                  child: Text(
+                    'Cow ${cowLocation.cowId}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    setState(() {
+      print("Markers updated: $_markers");
     });
   }
 

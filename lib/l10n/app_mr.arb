@@ -1,20 +1,89 @@
 {
   "helloWorld": "नमस्कार जग",
+  "@helloWorld": {
+    "description": "एक साधारण अभिवादन"
+  },
   "welcome": "माझ्या अॅपमध्ये आपले स्वागत आहे",
+  "@welcome": {
+    "description": "स्वागत संदेश"
+  },
   "next": "पुढे",
   "selectLanguage": "भाषा निवडा",
   "enterYourPhone": "आपला फोन नंबर प्रविष्ट करा",
-  "sixDigitCodeInfo": "आपला फोन नंबर सत्यापित करण्यासाठी आपल्याला 6-अंकी कोड मिळेल",
+  "sixDigitCodeInfo": "आपल्या फोन नंबरची पुष्टी करण्यासाठी आपल्याला 6-अंकी कोड प्राप्त होईल",
   "phoneNumber": "फोन नंबर",
-  "enterReceivedOTP": "प्राप्त OTP प्रविष्ट करा",
-  "sendOTP": "OTP पाठवा",
+  "enterReceivedOTP": "प्राप्त ओटीपी प्रविष्ट करा",
+  "sendOTP": "ओटीपी पाठवा",
   "verifyPhoneNumber": "फोन नंबर सत्यापित करा",
-  "enterValidOTP": "वैध OTP प्रविष्ट करा!",
+  "enterValidOTP": "वैध ओटीपी प्रविष्ट करा!",
   "enterValidPhoneNumber": "वैध फोन नंबर प्रविष्ट करा!",
-  "settings" : "Settings",
-  "home_tab" : "मुख्य पृष्ठ",
-  "locateCow_tab" : "गाय शोधा",
-  "settings_tab" : "सेटिंग्स",
-  "profile_tab" : "प्रोफाइल",
-  "addcow_tab" : "गाय जोडा"
+  "settings": "सेटिंग्ज",
+  "home_tab": "मुख्यपृष्ठ",
+  "@home_tab": {
+    "description": "मुख्यपृष्ठ टॅबसाठी शीर्षक"
+  },
+  "locateCow_tab": "गाय शोधा",
+  "settings_tab": "सेटिंग्ज",
+  "profile_tab": "प्रोफाइल",
+  "addcow_tab": "गाय जोडा",
+  "change_language": "भाषा बदला",
+  "cancel": "रद्द करा",
+  "addCow": "गाय जोडा",
+  "cowLinkedSuccessfully": "गाय यशस्वीरित्या जोडली गेली",
+  "failedToLinkCow": "गाय जोडण्यात अयशस्वी",
+  "error": "त्रुटी: ",
+  "userNotLoggedIn": "वापरकर्ता लॉग इन नाही",
+  "linkNewCow": "नवीन गाय जोडा",
+  "cowID": "गाय आयडी",
+  "enterUniqueCowID": "आपल्या गायीसाठी अद्वितीय आयडी प्रविष्ट करा",
+  "linkCowToFarmer": "गाय शेतकऱ्याशी जोडा",
+  "pleaseEnterCowID": "कृपया गाय आयडी प्रविष्ट करा",
+  "total_cows": "एकूण गायी",
+  "@total_cows": {
+    "description": "कार्ड शीर्षक जे एकूण गायींची संख्या दाखवते"
+  },
+  "total_records": "एकूण नोंदी",
+  "@total_records": {
+    "description": "कार्ड शीर्षक जे एकूण नोंदी दाखवते"
+  },
+  "avg_temperature": "सरासरी तापमान",
+  "@avg_temperature": {
+    "description": "कार्ड शीर्षक जे सरासरी तापमान दाखवते"
+  },
+  "avg_heart_rate": "सरासरी हृदय गती",
+  "@avg_heart_rate": {
+    "description": "कार्ड शीर्षक जे सरासरी हृदय गती दाखवते"
+  },
+  "latest_readings": "नवीनतम रीडिंग",
+  "@latest_readings": {
+    "description": "सेक्शन शीर्षक जे नवीनतम रीडिंग दाखवते"
+  },
+  "cow_id": "गाय आयडी: {cowId}",
+  "@cow_id": {
+    "description": "प्लेसहोल्डरसह गाय आयडी दर्शवणारा मजकूर"
+  },
+  "temperature": "तापमान: {temperature}",
+  "@temperature": {
+    "description": "प्लेसहोल्डरसह तापमान दर्शवणारा मजकूर"
+  },
+  "heart_rate": "हृदय गती: {heartRate}",
+  "@heart_rate": {
+    "description": "प्लेसहोल्डरसह हृदय गती दर्शवणारा मजकूर"
+  },
+  "spo2": "एसपीओ2: {spo2}",
+  "@spo2": {
+    "description": "प्लेसहोल्डरसह एसपीओ2 पातळी दर्शवणारा मजकूर"
+  },
+  "gps": "जीपीएस: अक्षांश {latitude}, रेखांश {longitude}",
+  "@gps": {
+    "description": "प्लेसहोल्डरसह जीपीएस समन्वय दर्शवणारा मजकूर"
+  },
+  "error_message": "त्रुटी: {error}",
+  "@error_message": {
+    "description": "प्लेसहोल्डरसह त्रुटी संदेश दर्शवणारा स्नॅकबार संदेश"
+  },
+  "user_not_logged_in": "वापरकर्ता लॉग इन नाही",
+  "@user_not_logged_in": {
+    "description": "स्नॅकबार संदेश जो वापरकर्ता लॉग इन नाही दाखवतो"
+  }
 }
