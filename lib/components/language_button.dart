@@ -36,7 +36,7 @@ class LanguageButton extends StatelessWidget {
             child: Text(
               languageName,
               style: TextStyle(
-                fontFamily: 'MuktaLatin',
+                fontFamily: 'Inter',
                 color: isSelected ? Colors.white : Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 15

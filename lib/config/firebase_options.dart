@@ -41,48 +41,53 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAIxb8Q8LDhjqUgKND4yMPGH7d6u-mfAVA',
-    appId: '1:718513815057:web:d9c7fb8bc82c9f04c67bb0',
-    messagingSenderId: '718513815057',
-    projectId: 'agro-bharat-demo',
-    authDomain: 'agro-bharat-demo.firebaseapp.com',
-    storageBucket: 'agro-bharat-demo.appspot.com',
-    measurementId: 'G-WGNXDXRWFW',
+    apiKey: 'AIzaSyDsbOvyh-h5lWZKI_LAzCH9oo0brPpF5as',
+    appId: '1:905020690253:web:f1da31870ecfa454557104',
+    messagingSenderId: '905020690253',
+    projectId: 'biofit-429421',
+    authDomain: 'biofit-429421.firebaseapp.com',
+    databaseURL: 'https://biofit-429421-default-rtdb.firebaseio.com',
+    storageBucket: 'biofit-429421.appspot.com',
+    measurementId: 'G-0RM6W3FSMY',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDGfHHe6zR62pm31itjkxjjsUDnKVN9_vM',
-    appId: '1:718513815057:android:982ed4c026726b93c67bb0',
-    messagingSenderId: '718513815057',
-    projectId: 'agro-bharat-demo',
-    storageBucket: 'agro-bharat-demo.appspot.com',
+    apiKey: 'AIzaSyApuVOwRnxF1gCzw0ESwIuYNCCNzBUEyLc',
+    appId: '1:905020690253:android:d94b0b0f8219a8f5557104',
+    messagingSenderId: '905020690253',
+    projectId: 'biofit-429421',
+    databaseURL: 'https://biofit-429421-default-rtdb.firebaseio.com',
+    storageBucket: 'biofit-429421.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC-fYSbFqERZ_bOHfEQ3Qje7XVgJpjicfs',
-    appId: '1:718513815057:ios:8f9eb37b6ce51b68c67bb0',
-    messagingSenderId: '718513815057',
-    projectId: 'agro-bharat-demo',
-    storageBucket: 'agro-bharat-demo.appspot.com',
+    apiKey: 'AIzaSyBuFxjN4J0H8_4Ix57aWDD8PguonzR7qCU',
+    appId: '1:905020690253:ios:7389ae40506a06a4557104',
+    messagingSenderId: '905020690253',
+    projectId: 'biofit-429421',
+    databaseURL: 'https://biofit-429421-default-rtdb.firebaseio.com',
+    storageBucket: 'biofit-429421.appspot.com',
     iosBundleId: 'labs.aim.agroBharat',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC-fYSbFqERZ_bOHfEQ3Qje7XVgJpjicfs',
-    appId: '1:718513815057:ios:8f9eb37b6ce51b68c67bb0',
-    messagingSenderId: '718513815057',
-    projectId: 'agro-bharat-demo',
-    storageBucket: 'agro-bharat-demo.appspot.com',
+    apiKey: 'AIzaSyBuFxjN4J0H8_4Ix57aWDD8PguonzR7qCU',
+    appId: '1:905020690253:ios:7389ae40506a06a4557104',
+    messagingSenderId: '905020690253',
+    projectId: 'biofit-429421',
+    databaseURL: 'https://biofit-429421-default-rtdb.firebaseio.com',
+    storageBucket: 'biofit-429421.appspot.com',
     iosBundleId: 'labs.aim.agroBharat',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAIxb8Q8LDhjqUgKND4yMPGH7d6u-mfAVA',
-    appId: '1:718513815057:web:c5640097c46f34afc67bb0',
-    messagingSenderId: '718513815057',
-    projectId: 'agro-bharat-demo',
-    authDomain: 'agro-bharat-demo.firebaseapp.com',
-    storageBucket: 'agro-bharat-demo.appspot.com',
-    measurementId: 'G-T1DKL7KLB9',
+    apiKey: 'AIzaSyDsbOvyh-h5lWZKI_LAzCH9oo0brPpF5as',
+    appId: '1:905020690253:web:7b90a0fbd309a288557104',
+    messagingSenderId: '905020690253',
+    projectId: 'biofit-429421',
+    authDomain: 'biofit-429421.firebaseapp.com',
+    databaseURL: 'https://biofit-429421-default-rtdb.firebaseio.com',
+    storageBucket: 'biofit-429421.appspot.com',
+    measurementId: 'G-0PD76KPYFF',
   );
 }

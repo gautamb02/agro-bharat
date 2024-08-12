@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "718513815057",
-    "project_id": "agro-bharat-demo",
-    "storage_bucket": "agro-bharat-demo.appspot.com"
+    "project_number": "905020690253",
+    "firebase_url": "https://biofit-429421-default-rtdb.firebaseio.com",
+    "project_id": "biofit-429421",
+    "storage_bucket": "biofit-429421.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:718513815057:android:982ed4c026726b93c67bb0",
+        "mobilesdk_app_id": "1:905020690253:android:d94b0b0f8219a8f5557104",
         "android_client_info": {
           "package_name": "labs.aim.agro_bharat"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDGfHHe6zR62pm31itjkxjjsUDnKVN9_vM"
+          "current_key": "AIzaSyApuVOwRnxF1gCzw0ESwIuYNCCNzBUEyLc"
         }
       ],
       "services": {

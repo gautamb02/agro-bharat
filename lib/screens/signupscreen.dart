@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _selectedState ?? "",
         _pincodeController.text.trim());
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+    Navigator.pop(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
   }
 
   @override
@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'MuktaLatin',
+                    fontFamily: 'Inter',
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -141,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _nameController,
                   cursorColor: Colors.black,
                   style: TextStyle(
-                      fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
+                      fontFamily: 'Inter', height: 1, fontSize: 19),
                   decoration: InputDecoration(
                     iconColor: Colors.black,
                     hintText: 'Full Name',
@@ -173,7 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
                               : 'Date of Birth',
                           style: const TextStyle(
-                            fontFamily: 'MuktaLatin',
+                            fontFamily: 'Inter',
                             fontSize: 19,
                           ),
                         ),
@@ -186,7 +186,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _addressController,
                   cursorColor: Colors.black,
                   style: TextStyle(
-                      fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
+                      fontFamily: 'Inter', height: 1, fontSize: 19),
                   decoration: InputDecoration(
                     iconColor: Colors.black,
                     hintText: 'Address',
@@ -231,7 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.number,
                   cursorColor: Colors.black,
                   style: TextStyle(
-                      fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
+                      fontFamily: 'Inter', height: 1, fontSize: 19),
                   decoration: InputDecoration(
                     iconColor: Colors.black,
                     hintText: 'Pincode',
@@ -256,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.5,
-                      fontFamily: 'MuktaLatin',
+                      fontFamily: 'Inter',
                     )),
                   ),
                   child: const Text(

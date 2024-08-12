@@ -155,6 +155,10 @@ class _DashboardState extends State<Dashboard> {
 
   Widget _buildLatestReadings() {
     List<dynamic> latestReadings = _dashboardData['latestReadings'] ?? [];
+
+    if(latestReadings.isEmpty){
+      return Text("No Record Found");
+    }
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),

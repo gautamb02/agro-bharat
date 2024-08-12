@@ -217,7 +217,7 @@ class _FarmerProfileState extends State<FarmerProfile> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontFamily: 'MuktaLatin',
+                                fontFamily: 'Inter',
                                 fontSize: 19,
                               ),
                             ),

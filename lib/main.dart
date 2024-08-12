@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           title: 'Agro Bharat',
           theme: ThemeData(
-            fontFamily: "MuktaLatin",
+            fontFamily: "Inter",
             useMaterial3: true,
           ),
           home: LanguageSelectionScreen(),

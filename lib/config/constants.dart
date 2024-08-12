@@ -10,5 +10,5 @@ class AppConstants{
   static const primaryBlue = Color(0xFF5C9EAD);
 
   // static const COW_SENSOR_BASE_URL = "https://cow-sensor-api.onrender.com";
-  static const COW_SENSOR_BASE_URL = "http://192.168.0.104:4000";
+  static const COW_SENSOR_BASE_URL = "http://192.168.70.28:8080";
 }

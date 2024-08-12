@@ -89,7 +89,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       color: Colors.white,
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
-                      fontFamily: 'MuktaLatin',
+                      fontFamily: 'Inter',
                     ),
                   ),
                 ),

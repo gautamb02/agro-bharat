@@ -15,237 +15,250 @@ class PhoneNumberScreen extends StatefulWidget {
 }
 
 class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
+  final _phoneController = TextEditingController();
+  final _otpController = TextEditingController();
+  final FirestoreService _firestoreService = FirestoreService();
+
   bool _showOTPField = false;
   bool _showVerifyButton = false;
   bool _showOtpButton = true;
-  final _phoneController = TextEditingController();
-  final _otpController = TextEditingController();
+  bool _isLoading = false;
+
   String? _phoneNumber;
-  String? verificationid;
-  String? _otp;
-  FirestoreService _firestoreService = FirestoreService();
+  String? _verificationId;
 
   @override
   void dispose() {
     _phoneController.dispose();
+    _otpController.dispose();
     super.dispose();
   }
 
-  void _verifyPhoneNumber(BuildContext context) async {
-    // Add your phone number verification logic here
-    _otp = _otpController.text.trim();
-
-    if (_otp!.length != 6) {
-      final snackdemo = SnackBar(
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
         content: Text(
-          AppLocalizations.of(context)!.enterValidOTP,
-          style: TextStyle(fontFamily: 'MuktaLatin'),
+          message,
+          style: TextStyle(fontFamily: 'Inter'),
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: isError ? Colors.red : Colors.green,
         elevation: 10,
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.all(5),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
+      ),
+    );
+  }
+
+  Future<void> _sendOTP() async {
+    _phoneNumber = _phoneController.text.trim();
+    if (_phoneNumber!.length != 10) {
+      _showSnackBar(AppLocalizations.of(context)!.enterValidPhoneNumber, isError: true);
       return;
     }
 
+    setState(() {
+      _isLoading = true;
+    });
+
+    _phoneNumber = "+91$_phoneNumber";
     try {
-      if (verificationid == null || _otp == null) {
-        return;
-      }
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: _phoneNumber!,
+        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationFailed: (FirebaseAuthException e) {
+          setState(() {
+            _isLoading = false;
+          });
+          _showSnackBar(e.message ?? "Verification failed", isError: true);
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setState(() {
+            _verificationId = verificationId;
+            _showOTPField = true;
+            _showVerifyButton = true;
+            _showOtpButton = false;
+            _isLoading = false;
+          });
+          _showSnackBar("OTP Sent");
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setState(() {
+            _isLoading = false;
+          });
+        },
+      );
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      _showSnackBar("Error sending OTP: $e", isError: true);
+    }
+  }
+
+  Future<void> _verifyPhoneNumber() async {
+    String otp = _otpController.text.trim();
+    if (otp.length != 6) {
+      _showSnackBar(AppLocalizations.of(context)!.enterValidOTP, isError: true);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationid ?? '',
-        smsCode: _otp ?? '',
+        verificationId: _verificationId!,
+        smsCode: otp,
       );
 
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) async {
-        User? user = FirebaseAuth.instance.currentUser;
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
 
-        if (user != null) {
-          String uid = user.uid;
-          DocumentSnapshot<Object?>? userDataSnapshot =
-          await _firestoreService.getUserDataByPhoneNumber(_phoneNumber!);
-          if (userDataSnapshot != null) {
-            print("USER SNAP : ${userDataSnapshot['name']}");
-            await _firestoreService.updateUserFcmToken(uid);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SignUpScreen(
-                    phoneNumber: _phoneNumber ?? "",
-                    userId: uid
-                ),
+      if (user != null) {
+        DocumentSnapshot<Object?>? userDataSnapshot = await _firestoreService.getUserDataByPhoneNumber(_phoneNumber!);
+
+        if (userDataSnapshot != null) {
+          await _firestoreService.updateUserFcmToken(user.uid);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignUpScreen(
+                phoneNumber: _phoneNumber!,
+                userId: user.uid,
               ),
-            );
-          }
+            ),
+          );
         }
+      }
+    } catch (e) {
+      _showSnackBar("Verification failed: $e", isError: true);
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
-    } catch (ex) {
-      print(ex.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-             Text(
-              AppLocalizations.of(context)!.enterYourPhone,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'MuktaLatin',
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              AppLocalizations.of(context)!.sixDigitCodeInfo,
-              style: TextStyle(
-                fontFamily: 'MuktaLatin',
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              cursorColor: Colors.black,
-              style:
-                  TextStyle(fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
-              decoration: InputDecoration(
-                iconColor: Colors.black,
-                hintText: AppLocalizations.of(context)!.phoneNumber,
-                filled: true,
-                fillColor: AppConstants.cardBackgroundColor,
-                prefixIcon: Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Visibility(
-              visible: _showOTPField,
-              child: TextField(
-                controller: _otpController,
-                keyboardType: TextInputType.number,
-                cursorColor: Colors.black,
-                style: TextStyle(
-                    fontFamily: 'MuktaLatin', height: 1, fontSize: 19),
-                decoration: InputDecoration(
-                  iconColor: Colors.black,
-                  hintText: AppLocalizations.of(context)!.enterReceivedOTP,
-                  filled: true,
-                  fillColor: AppConstants.cardBackgroundColor,
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.enterYourPhone,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Inter',
                   ),
                 ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context)!.sixDigitCodeInfo,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    color: Colors.grey[700],
+                  ),
+                ),
+                SizedBox(height: 20),
+                _buildTextField(
+                  controller: _phoneController,
+                  hintText: AppLocalizations.of(context)!.phoneNumber,
+                  icon: Icons.phone,
+                  keyboardType: TextInputType.phone,
+                ),
+                SizedBox(height: 20),
+                if (_showOTPField)
+                  _buildTextField(
+                    controller: _otpController,
+                    hintText: AppLocalizations.of(context)!.enterReceivedOTP,
+                    icon: Icons.lock,
+                    keyboardType: TextInputType.number,
+                  ),
+                const SizedBox(height: 20),
+                if (_showOtpButton)
+                  _buildButton(
+                    onPressed: _isLoading ? null : _sendOTP,
+                    text: AppLocalizations.of(context)!.sendOTP,
+                  ),
+                if (_showVerifyButton)
+                  _buildButton(
+                    onPressed: _isLoading ? null : _verifyPhoneNumber,
+                    text: AppLocalizations.of(context)!.verifyPhoneNumber,
+                  ),
+              ],
+            ),
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppConstants.primaryGreen),
+                ),
               ),
             ),
-            const SizedBox(height: 20),
-            Visibility(
-              visible: _showOtpButton,
-              child: ElevatedButton(
-                  onPressed:  () => _sendOTP(context),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(AppConstants.primaryGreen),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(10)),
-                      textStyle: MaterialStateProperty.all(const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
-                          fontFamily: 'MuktaLatin'))),
-                  child:  Text(
-                    AppLocalizations.of(context)!.sendOTP,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-            Visibility(
-              visible: _showVerifyButton,
-              child: ElevatedButton(
-                  onPressed: () => _verifyPhoneNumber(context),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(AppConstants.primaryGreen),
-                      padding:
-                          MaterialStateProperty.all(const EdgeInsets.all(10)),
-                      textStyle: MaterialStateProperty.all(const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
-                          fontFamily: 'MuktaLatin'))),
-                  child:  Text(
-                    AppLocalizations.of(context)!.verifyPhoneNumber,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    required TextInputType keyboardType,
+  }) {
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      cursorColor: Colors.black,
+      style: TextStyle(fontFamily: 'Inter', height: 1, fontSize: 19),
+      decoration: InputDecoration(
+        iconColor: Colors.black,
+        hintText: hintText,
+        filled: true,
+        fillColor: AppConstants.cardBackgroundColor,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
   }
 
-  void _sendOTP(BuildContext context) async {
-    _phoneNumber = _phoneController.text.trim();
-    // You can navigate to the next screen or perform any other action
-    // based on the verified phone number
-    if (_phoneNumber!.length != 10) {
-      final snackdemo = SnackBar(
-        content: Text(
-          AppLocalizations.of(context)!.enterValidPhoneNumber,
-          style: TextStyle(fontFamily: 'MuktaLatin'),
-        ),
-        backgroundColor: Colors.red,
-        elevation: 10,
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.all(5),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackdemo);
-      return;
-    }
-
-    _phoneNumber = "+91" + _phoneNumber!;
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _phoneNumber!,
-        verificationCompleted: (PhoneAuthCredential credential) {},
-        verificationFailed: (FirebaseAuthException e) {},
-        codeSent: (String verificationId, int? resendToken) {
-          setState(() {
-            verificationid = verificationId;
-            _showOTPField = true;
-            _showVerifyButton = true;
-            _showOtpButton = false;
-          });
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
-    } catch (e) {
-      print("Error sending OTP: $e");
-      // Handle error sending OTP
-    }
+  Widget _buildButton({required VoidCallback? onPressed, required String text}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(AppConstants.primaryGreen),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+        textStyle: MaterialStateProperty.all(const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.5,
+          fontFamily: 'Inter',
+        )),
+      ),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
-
 }

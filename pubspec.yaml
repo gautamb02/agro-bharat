@@ -60,9 +60,9 @@ flutter:
     - assets/images/
 
   fonts:
-    - family: MuktaLatin
+    - family: Inter
       fonts:
-        - asset: assets/fonts/mukta_regular.ttf
+        - asset: assets/fonts/inter/inter.ttf
     - family: Outfit
       fonts:
         - asset: assets/fonts/Outfit-Regular.ttf

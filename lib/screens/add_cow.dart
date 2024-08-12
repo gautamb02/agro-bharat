@@ -70,9 +70,11 @@ class _AddCowState extends State<AddCow> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(AppLocalizations.of(context)!.addCow, style: TextStyle(color: Colors.black)),
+        elevation: 5,
+        centerTitle: true,
+
+        backgroundColor: AppConstants.primaryGreen,
+        title: Text(AppLocalizations.of(context)!.addCow, style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800)),
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SafeArea(
