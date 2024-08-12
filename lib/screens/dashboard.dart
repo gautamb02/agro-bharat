@@ -126,11 +126,15 @@ class _DashboardState extends State<Dashboard> {
 
   String _formatValue(dynamic value, String unit, [int decimalPlaces = 1]) {
     if (value == null) return 'N/A';
+    if (value is int) {
+      value = value.toDouble();  // Cast int to double
+    }
     if (value is num) {
       return '${value.toStringAsFixed(decimalPlaces)}$unit';
     }
     return '$value$unit';
   }
+
 
   Widget _buildCard(String title, String value, IconData icon) {
     return Card(
@@ -144,9 +148,9 @@ class _DashboardState extends State<Dashboard> {
           children: [
             Icon(icon, size: 40, color: AppConstants.primaryBlue),
             SizedBox(height: 8),
-            Text(title, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+            Text(title, style: TextStyle(fontSize: 11, color: Colors.grey[600])),
             SizedBox(height: 4),
-            Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(value, style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -170,7 +174,7 @@ class _DashboardState extends State<Dashboard> {
           margin: EdgeInsets.only(bottom: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: ListTile(
-            title: Text('Cow ID: ${reading['cowId'] ?? 'N/A'}'),
+            title: Text('ID: ${reading['cowId'] ?? 'N/A'}'),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -179,12 +183,13 @@ class _DashboardState extends State<Dashboard> {
                 Text('SPO2: ${_formatValue(reading['max30100']?['spo2'], '%', 0)}'),
                 Text('GPS: Lat ${_formatValue(reading['gps']?['latitude'], '°', 6)}, '
                     'Long ${_formatValue(reading['gps']?['longitude'], '°', 6)}'),
+                Text(
+                  _formatTimestamp(reading['timestamp']),
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                )
               ],
             ),
-            trailing: Text(
-              _formatTimestamp(reading['timestamp']),
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
+
           ),
         );
       },
@@ -193,13 +198,23 @@ class _DashboardState extends State<Dashboard> {
 
 
   String _formatTimestamp(dynamic timestamp) {
+    // print(timestamp);
     if (timestamp == null) return 'N/A';
+
+    // Handling timestamp as a Map with 'seconds' and 'nanoseconds'
     if (timestamp is Map<String, dynamic> &&
         timestamp.containsKey('seconds') &&
         timestamp.containsKey('nanoseconds')) {
-      int milliseconds = timestamp['seconds'] * 1000 + (timestamp['nanoseconds'] / 1000000).round();
+      int milliseconds = timestamp['seconds'] * 1000 + (timestamp['nanoseconds'] / 1000000).toInt();
       return DateTime.fromMillisecondsSinceEpoch(milliseconds).toString().split('.')[0];
     }
+
+    // Handling timestamp as an integer (milliseconds since epoch)
+    if (timestamp is int) {
+      return DateTime.fromMillisecondsSinceEpoch(timestamp).toString().split('.')[0];
+    }
+
     return 'Invalid timestamp';
   }
+
 }

@@ -29,7 +29,8 @@ class _AddCowState extends State<AddCow> {
 
         try {
           final response = await http.post(
-            Uri.parse('${AppConstants.COW_SENSOR_BASE_URL}/linkCowToFarmer/$farmerId/$cowId'),
+            Uri.parse(
+                '${AppConstants.COW_SENSOR_BASE_URL}/linkCowToFarmer/$farmerId/$cowId'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -39,7 +40,9 @@ class _AddCowState extends State<AddCow> {
 
           if (response.statusCode == 200) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(AppLocalizations.of(context)!.cowLinkedSuccessfully)),
+              SnackBar(
+                  content: Text(
+                      AppLocalizations.of(context)!.cowLinkedSuccessfully)),
             );
             _cowIdController.clear();
           } else {
@@ -47,7 +50,9 @@ class _AddCowState extends State<AddCow> {
           }
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${AppLocalizations.of(context)!.error} ${e.toString()}')),
+            SnackBar(
+                content: Text(
+                    '${AppLocalizations.of(context)!.error} ${e.toString()}')),
           );
         } finally {
           setState(() {
@@ -56,7 +61,8 @@ class _AddCowState extends State<AddCow> {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.userNotLoggedIn)),
+          SnackBar(
+              content: Text(AppLocalizations.of(context)!.userNotLoggedIn)),
         );
         setState(() {
           _isLoading = false;
@@ -72,9 +78,9 @@ class _AddCowState extends State<AddCow> {
       appBar: AppBar(
         elevation: 5,
         centerTitle: true,
-
         backgroundColor: AppConstants.primaryGreen,
-        title: Text(AppLocalizations.of(context)!.addCow, style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800)),
+        title: Text(AppLocalizations.of(context)!.addCow,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SafeArea(
@@ -87,10 +93,10 @@ class _AddCowState extends State<AddCow> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 20),
-                  Icon(
-                    Icons.pets,
-                    size: 100,
-                    color: Colors.blue[300],
+                  Image.asset(
+                    'assets/images/cow_icon.png',
+                    width: 100,
+                    height: 100,
                   ),
                   SizedBox(height: 40),
                   Text(
@@ -115,7 +121,8 @@ class _AddCowState extends State<AddCow> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.blue[500]!, width: 2),
+                        borderSide:
+                            BorderSide(color: Colors.blue[500]!, width: 2),
                       ),
                     ),
                     validator: (value) {
@@ -126,17 +133,17 @@ class _AddCowState extends State<AddCow> {
                     },
                   ),
                   SizedBox(height: 30),
-
                   ElevatedButton(
                     onPressed: _isLoading ? null : _linkCowToFarmer,
                     child: _isLoading
                         ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
                         : Text(AppLocalizations.of(context)!.linkCowToFarmer),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue[400],
